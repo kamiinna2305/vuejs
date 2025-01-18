@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Задача 3. Задано початок та кінець діапазону. При натисканні на кнопку випадковим чином генерувати значення з вказаного діапазону та відображати його.-->
+    <div id="app">
+      <div class="wraper-block">
+        <h2>Задача 3</h2>
+        <label>
+          Початок
+          <input type="number" v-model.lazy="startNumber">
+      </label>
+      <label>
+          Кінець
+          <input type="number" v-model.lazy="endNumber">
+      </label>
+      <hr>
+      <div>Випадкове число: {{ getRandomNumber() }}</div>
+      <div class="back"><a  href="lesson_1.html">Назад</a></div>
+      </div>  
+    </div>
+
+    <script>
+        const { createApp } = Vue
+  
+        createApp({
+          data() {
+            return {
+              startNumber: 0,
+              endNumber: 0,
+            }
+          },
+          methods: {
+            getRandomNumber() {
+                return (
+                this.startNumber + Math.floor(Math.random() * (this.endNumber - this.startNumber + 1))
+            )
+            }
+          }
+        }).mount('#app')
+      </script>
+
+</body>
+</html>

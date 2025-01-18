@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Вводиться номер місяця. Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….). Також автоматично виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс, …).-->
+
+    <div id="app">
+      <div class="wraper-block">
+        <h2>Задача 2</h2>
+        <label>
+          Введіть номер місяця (від 1 до 12)
+          <input type="number" v-model.lazy="monthNumber" />
+        </label>
+        <button type="button" @click="renderSeason">Результат</button>
+        <hr />
+       <div>
+        <p>Краще одягти {{seasonData.clothing}}</p>
+        <img :src="seasonData.image" :alt="seasonData.name">
+        <div class="back"><a  href="lesson_1.html">Назад</a></div>
+       </div>
+      </div>
+    </div>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        monthNumber: 0,
+        message: null,
+        seasonData: {
+          clothing: "",
+          image: ""
+        },
+        seasons: [
+          {
+            name: "summer",
+            clothing: "шорти",
+            image: "/images/summer.jpg"
+          },
+          {
+            name: "autumn",
+            clothing: "теплу куртку",
+            image: "/images/autumn.jpg"
+          },
+          {
+            name: "winter",
+            clothing: "пальто, а ще краще теплий пуховик",
+            image: "/images/winter.jpg"
+          },
+          {
+            name: "spring",
+            clothing: "легку куртку",
+            image: "/images/spring.jpg"
+          }
+        ]
+      }
+    },
+    methods: {
+      getNameSeason() {
+        if(this.monthNumber < 1 || this.monthNumber > 12) {
+          return alert("введіть правильно номер місяця");
+        }
+        switch (this.monthNumber) {
+          case 12:
+            case 1:
+              case 2:
+                return "winter"
+                break;
+          case 3:
+            case 4:
+              case 5:
+                return "spring"
+                break; 
+          case 6:
+            case 7:
+              case 8:
+                return "summer"
+                break;  
+          case 9:
+            case 10:
+              case 11:
+                return "autumn"
+                break;                   
+        }
+      },
+      renderSeason() {
+        const seasonName = this.getNameSeason()
+        this.seasonData = this.seasons.find(season => season.name === seasonName)
+      }
+    }
+  }).mount('#app')
+</script>
+
+</body>
+</html>

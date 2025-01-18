@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Задача 1. Вводиться кількість пасажирів. 
+    Вивести:
+       скільки потрібно автобусів (кожен автобус на 20 місць)
+       скільки пляшок води (кожному пасажиру 2 пляшки)
+       скільки бутербродів (кожному пасажиру 3 бутерброди)
+    -->
+       
+    <div id="app">
+      <div class="wraper-block">
+        <h2>Задача 1</h2>
+        <label>
+          Кількість пасажирів
+          <input type="number" v-model="passengersNumber"/>
+        </label>
+        <hr/>
+        <div>Кількість автобусів : {{busesNumber}}</div>
+        <div>Кількість пляшок : {{bottlesNumber}}</div>
+        <div>Кількість бутербродів : {{sandwichesNumber}}</div>
+        <div class="back"><a  href="lesson_1.html">Назад</a></div>
+      </div>
+      </div>
+    </div>
+
+<script>
+  const passengersInBus = 20
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        passengersNumber: 0,
+      }
+    },
+    computed: {
+          busesNumber() {
+            return Math.ceil(this.passengersNumber / passengersInBus)
+          },
+          bottlesNumber() {
+            return this.passengersNumber * 2
+          },
+          sandwichesNumber() {
+            return this.passengersNumber * 3
+          }
+        },
+  }).mount('#app')
+</script>
+
+</body>
+</html>

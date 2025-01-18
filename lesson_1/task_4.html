@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Рахунок у банку” Вимоги: 1) Спочатку сума дорівнює 0грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям. 2) Сума автоматично переводиться у долари та євро (фіксований курс задається у data). 3) можливість зарахувати суму (контролювати, щоб не була від’ємною) 4) можливість зняти (щоб не можна зняти більше ніж є на рахунку) 5) при виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків автоматично) При зміні суми : - якщо було зняття, то суму відоражати червоним - якщо було зарахування, то суму відображати зеленим Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим-->
+
+    <div id="app">
+      <div class="wraper-block">
+        <h2>Задача 4</h2>
+        <div class="balance" :class="colorBalance">Сума на рахунку: <span>{{ balance }}</span> грн.</div>
+        <hr>
+        <label class="label">
+          Зарахувати на рахунок:
+          <input type="number" v-model.number="replenishment">
+          <button @click="addReplenishment">Зарахувати</button>
+        </label>
+        <br>
+        <label class="label">
+          Зняти з рахунку:
+          <input type="number" v-model.number="withdraw">
+          <button @click="addWithdraw">Зняти</button>
+        </label>
+
+        <div>Відсотки за обслуговування: <span>{{serviceCharge}}</span>грн</div>
+<hr>
+        <div :style="colorDollar">Сума у доларах: $ <span>{{dollar}}</span></div>
+		    <div :style="colorEuro">Сума у євро: Є <span>{{euro}}</span></div>
+        <div class="back"><a  href="lesson_1.html">Назад</a></div>
+      </div>
+    </div>
+    <script>
+        const { createApp } = Vue
+        const TAX = 3
+        createApp({
+          data() {
+            return {
+              balance: 0,
+              replenishment: null,
+					    withdraw: null,
+					    dollarRate: 42.32,
+					    euroRate: 43.35,
+					    dollarConvert: null,
+					    euroRateConvert: null,
+              serviceCharge: 0,
+					    color: null,
+              colorDollar: null,
+              colorEuro: null
+            }
+          },
+          methods: {
+            addReplenishment() {
+              if (this.replenishment > 0) {
+                this.balance = parseFloat((this.balance + this. replenishment).toFixed(2));
+                let tax = parseFloat((this.replenishment / 100) * TAX).toFixed(2);
+                this.serviceCharge = tax;
+                this.balance = parseFloat((this.balance - this. serviceCharge).toFixed(2));
+						    this.color = 'green'
+					} else {
+						alert(`Помилка`)
+					}  
+            },
+            addWithdraw() {
+              if(this.withdraw > 0) {
+                tax = parseFloat((this.withdraw / 100) * TAX).toFixed(2);
+                this.serviceCharge = tax;
+                if(this.balance >= this.withdraw + parseInt(tax)) {
+                  this.balance = parseFloat((this.balance - (this.withdraw + parseInt(this.serviceCharge))).toFixed(2));
+						      color = 'red'
+                }else{
+                  alert('Не достатня сума на рахунку')
+                }
+              } else {
+                alert('Помилка')
+              }
+            }
+          
+          },
+          computed: {
+            dollar() {
+              const sumDollars = parseFloat((this.balance / this.dollarRate).toFixed(2))
+              sumDollars > 100 ? this.colorDollar = 'color:green': this.colorDollar = 'color:red'
+              return sumDollars
+				},
+				    euro() {
+          const sumEuros = parseFloat((this.balance / this.euroRate).toFixed(2))
+          sumEuros > 100 ? this.colorEuro = 'color:green': this.colorEuro = 'color:red'
+          return sumEuros
+				},
+				colorBalance() {
+					return this.balance >= 100 ? 'green' : 'red';
+				}
+          }
+        }).mount('#app')
+      </script>
+
+</body>
+</html>

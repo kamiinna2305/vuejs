@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Додаток містить масив об’єктів (логін, пароль) -- інсуючі логіни і паролі. Користувач вводить логін і пароль, а програма повідомляє чи може користувач бути авторизованим (чи є він одним з масиву).-->
+    <div id="app">
+      <div class="wraper-block">
+        <h2>Задача 1</h2>
+        <div>
+          <label>Login
+            <input type="text" v-model.lazy="userLogin">
+          </label>
+          <br>
+          <label>Password
+            <input type="password" v-model.lazy="userPassword">
+          </label>
+          <button @click="verification">Go</button>
+        </div>
+        <div>
+          Login: inna <br>
+          Password: 235Oln
+        </div>
+        <div class="back"><a  href="lesson_1.html">Назад</a></div>
+      </div>
+     
+    </div>
+    <script>
+        const { createApp } = Vue
+        const userData = [
+          {
+            login: 'inna',
+            password: '235Oln'
+          },
+          {
+            login: 'misha12',
+            password: '1234gd+'
+          },
+          {
+            login: 'cat',
+            password: 'popo1212'
+          }
+        ]
+  
+        createApp({
+          data() {
+            return {
+              userLogin: null,
+              userPassword: null
+            }
+          },
+          methods: {
+            verification() {
+              if (this.userLogin && this.userPassword) {
+						let result = userData.some(item => item.login === this.userLogin && item.password === this.userPassword)
+						result ? alert('Ви авторизовані') : alert('Неправильний логін чи пароль')
+					} else {
+						alert('Введіть логін та пароль')
+					}
+            }
+          }
+        }).mount('#app')
+      </script>
+</body>
+</html>
