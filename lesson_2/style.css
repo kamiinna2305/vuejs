@@ -74,7 +74,7 @@ button{
 }
 
 .busines-cabin{
-    background: url('../images/buisness.jpg') no-repeat;
+    background: url('images/buisness.jpg') no-repeat;
     width: 500px;
     height: 400px;
     border-radius: 10px;
@@ -88,7 +88,7 @@ button{
 }
 
 .clouds{
-    background: url('../images/clouds.webp') no-repeat;
+    background: url('images/clouds.webp') no-repeat;
     width: 500px;
     height: 400px;
     border-radius: 10px;
