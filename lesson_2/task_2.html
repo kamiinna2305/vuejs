@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Задача 2. З випадаючого списку вибираємо клас квитка у літаку. Якщо
+1) бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то запропонувати закуску (так/ні)), на фоні зображення бізнес кают
+2) економ – виводимо елементи для вибору типу пива і чипсів, на фоні хмарки.-->
+       
+    <div id="app">
+      <div class="wraper">
+        <div class="block">
+          <h2>Задача 2.</h2>
+          <p>З випадаючого списку вибираємо клас квитка у літаку. Якщо
+               <p>1) бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то запропонувати закуску (так/ні)), на фоні зображення бізнес кают</p>
+               <p>2) економ – виводимо елементи для вибору типу пива і чипсів, на фоні хмарки.</p>
+          </p>
+        </div>
+        <div class="block block-task">
+          <h2>Оберіть клас квитка</h2>
+          <select v-model="ticketClass">
+            <option value="business">Бізнес</option>
+            <option value="econom">Економ</option>
+          </select>
+
+          <div class="ticket-options" :class="ticketClassBg" v-show="isTicketClassSelected">
+            <h2>Оберіть додаткові опції</h2>
+				  <select v-if="isBusiness" v-model="optionsBusiness">
+					  <option value="news">Газети</option>
+					  <option value="cognac">Коньяк</option>
+				  </select>
+
+				  <select v-else v-model="optionsEconom">
+					  <option value="beer">Пиво</option>
+					  <option value="chips">Чіпси</option>
+				  </select>
+
+          <div v-if=" isBusiness && isCognac">
+            <h2>Вам потрібна закуска?</h2>
+          <select  v-modal="optionsSnack">
+            <option value="yes">Так</option>
+            <option value="no">Ні</option>
+          </select>
+          </div>
+        </div>
+
+        <div class="back"><a  href="index.html">Назад</a></div>
+        </div>
+      </div>
+    </div>
+
+<script>
+  
+  const { createApp } = Vue;
+
+  createApp({
+    data() {
+      return {
+        ticketClass: null,
+        optionsBusiness: null,
+				optionsEconom: null,
+				optionsSnack: null
+      }
+    },
+    computed: {
+      isTicketClassSelected() {
+						return !!this.ticketClass;
+					},
+					isBusiness() {
+						return this.ticketClass == 'business';
+					},
+          isCognac(){
+            return this.optionsBusiness == 'cognac';
+          },
+					ticketClassBg() {
+						return this.isBusiness ? 'busines-cabin' : 'clouds';
+					}
+        },
+  }).mount('#app')
+</script>
+
+</body>
+</html>
