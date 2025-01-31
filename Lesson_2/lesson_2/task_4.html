@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Задача 4. Вивести список як маркований список з елементами у форматі (name: salary)-->
+
+    <div id="app">
+      <div class="wraper">
+        <div class="block">
+          <h2>Задача 4.</h2>
+          <p>Вивести список як маркований список з елементами у форматі (name: salary)</p>
+        </div>
+
+        <div class="block">
+          <h2>Зарплатний лист</h2>
+          <ul class="list">
+            <li v-for="worker in workersList" :key="worker.id">
+            {{worker.name}}: {{worker.salary}} грн
+            </li>
+          </ul>
+        </div>
+
+        <div class="back"><a  href="index.html">Назад</a></div>
+        </div>
+       
+      </div>
+    </div>
+
+<script>
+  
+  const { createApp } = Vue;
+
+  const workersList = [
+    {
+      id: 1,
+      name: 'Друкачук',
+      salary: 1000,
+    },
+    {
+      id: 2,
+      name: 'Сидоренко',
+      salary: 2000,
+    },
+    {
+      id: 3,
+      name: 'Глинко',
+      salary: 5500,
+    },
+    {
+      id: 4,
+      name: 'Расевич',
+      salary: 2600,
+    },
+    {
+      id: 5,
+      name: 'Кравець',
+      salary: 3900,
+    },
+  ]
+
+  createApp({
+    computed: {
+      workersList() {
+					return workersList;
+				}
+        },
+  }).mount('#app')
+</script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--Задача 1. Вводимо логіна і пароль. Якщо логін вірний відображаємо смайл. Якщо ні, то:
+1) якщо логін = Іван – колір повідомлення про помилку синій
+2) якщо хтось інший, то колір повідомлення червоний
+
+    
+    -->
+
+    <div id="app">
+      <div class="wraper">
+        <div class="block">
+          <h2>Задача 1.</h2>
+          <p>Вводимо логін і пароль. Якщо логін вірний відображаємо смайл. Якщо ні, то:
+               <p>1) якщо логін = Іван – колір повідомлення про помилку синій</p>
+               <p>2) якщо хтось інший, то колір повідомлення червоний</p>
+           </p>
+           <p>Login: admin</p>
+           <p>Password: 1111</p>
+        </div>
+
+        <div class="block">
+          <h2>Введіть логін і пароль</h2>
+          <label>
+            Login
+            <input type="text" v-model.lazy="userLogin"/>
+          </label>
+          <label>
+            Password
+            <input type="password" v-model.lazy="userPassword"/>
+          </label>
+          <button @click="isLoginCorrect">Enter</button>
+
+          <template v-if="isDataValid">
+            <div v-if="isLoginCorrect">
+              <img class="smile" src="/images/smile.jpg" alt="smile">
+            </div>
+            <h2 :class="textColor" v-else-if="login=='Ivan'">{{login}} не вірний логін !</h2>
+            <h2 :class="textColor" v-else>Логін і пароль не вірний ! </h2>
+          </template>
+
+        </div>
+        <div class="back"><a  href="index.html">Назад</a></div>
+        </div>
+       
+      </div>
+    </div>
+
+<script>
+  
+  const { createApp } = Vue;
+
+  const usersList = [
+			{
+				login: 'admin',
+				password: 1111
+			},
+			{
+				login: 'inna',
+				password: '3333'
+			},
+			{
+				login: 'login',
+				password: 'password'
+			},
+		];
+
+  createApp({
+    data() {
+      return {
+        userLogin: "",
+        userPassword: ""
+      }
+    },
+    computed: {
+      isDataValid(){
+        return this.userLogin && this.userPassword;
+      },
+      isLoginCorrect() {
+					return usersList.some(user => user.login == this.userLogin && user.password == this.userPassword);
+				},
+        textColor() {
+					let color;
+					if (!this.isLoginCorrect) {
+						color = this.userLogin == 'Ivan' ? 'textBlue' : 'textRed';
+					}
+					return color;
+			},
+        },
+  }).mount('#app')
+</script>
+
+</body>
+</html>
