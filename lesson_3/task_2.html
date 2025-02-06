@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--Задача 6.  Пари для танців. Поступово вибираємо хлопця, дівчину і додаємо у обрані пари. Пару можна видалити. Поки не вибрано хлопця і дівчину кнопка «Додати» заблокована.  Якщо не вистачає хлопців або дівчат вибір також блокується.
+-->
+     <style>
+      .participants{
+        display: flex;
+        gap: 130px;
+      }
+
+      select{
+        width: 140px;
+      }
+
+      .pairs{
+        font-size: 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+     </style> 
+
+    <div id="app">
+      <div class="wraper">
+        <div class="block">
+          <h2>Задача 2.</h2>
+          <p> Пари для танців. Поступово вибираємо хлопця, дівчину і додаємо у обрані пари. Пару можна видалити. Поки не вибрано хлопця і дівчину кнопка «Додати» заблокована.  Якщо не вистачає хлопців або дівчат вибір також блокується.
+          </p>
+        </div>
+
+        <div class="block ">
+        <div class="participants">
+          
+          <div>
+          <div class="boys">
+            <h2>Хлопці</h2>
+            <select 
+            :disabled="!disabledSelect" 
+            v-model="selectedBoy">
+              <option 
+              v-for="(boy,index) in boysList" 
+              :key="index" 
+              :value="boy">
+                {{boy}}
+              </option>
+            </select>
+          </div>
+          
+          <div class="girls">
+            <h2>Дівчата</h2>
+            <select 
+            :disabled="!disabledSelect" 
+            v-model="selectedGirl">
+              <option 
+              v-for="(girl, index) in girlsList" 
+              :key="index" 
+              :value="girl">
+                {{girl}}
+              </option>
+            </select>
+          </div>
+          
+          <button 
+            :disabled="!disabledButton" 
+            @click="addToPairsList" 
+            class="button-add">
+            Додати
+          </button>
+
+          </div>
+          <div v-show="pairsList.length > 0">
+            <h2>Пари для танців</h2>
+            <div>
+            <div  
+            v-for="(pair, index) in pairsList" 
+            :key="index" 
+            class="pairs">
+              <span>{{pair.boy}}</span>
+              <span>+</span>
+              <span>{{pair.girl}}</span>  
+              <button @click="deletePair(index)">Видалити пару</button>
+            </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="back"><a  href="index.html">Назад</a></div>
+        </div>
+      </div>
+    </div>
+
+
+
+<script>
+  
+  const { createApp } = Vue;
+
+  createApp({
+    data() {
+      return {
+        selectedGirl: null,
+        selectedBoy: null,
+        pairsList: [],
+        boysList : ['Петро','Олег','Олександр','Ігор','Сергій','Володимир'],
+       girlsList : ['Іванка','Олена','Анастасія','Ірина','Софія','Інна','Саміра','Каміла','Діана']
+      }
+    },
+    methods: {
+          deleteInLists() {
+            this.girlsList = this.girlsList.filter(
+              (girl) => girl !== this.selectedGirl
+            );
+            this.boysList = this.boysList.filter(
+              (boy) => boy !== this.selectedBoy
+            );
+          },
+          addToPairsList() {
+            const newPair = {
+              boy: this.selectedBoy,
+              girl: this.selectedGirl,
+            };
+            this.pairsList.push(newPair);
+            this.deleteInLists();
+            this.selectedBoy = null;
+            this.selectedGirl = null;
+          },
+          deletePair(index) {
+            this.boysList.push(this.pairsList[index].boy);
+            this.girlsList.push(this.pairsList[index].girl);
+            this.pairsList.splice(index, 1);
+          },
+        },
+        computed: {
+          disabledButton() {
+            return this.selectedBoy && this.selectedGirl;
+          },
+          disabledSelect() {
+            return this.boysList.length > 0 && this.girlsList.length > 0;
+          },
+        },
+      }).mount("#app");
+</script>
+</body>
+</html>

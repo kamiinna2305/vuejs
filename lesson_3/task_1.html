@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--Задача 9. Перекладач. Користувачу виводять змішані картки з словами на англійській і українській мові. Користувач поступово клікає на картки (виділяємо синьою рамкою). Якщо знайдено правильні пари карток, що відповідають одному слову, то видаляємо ці картки. Інакше - виділяємо червоною рамкою і через секунду забираємо рамку.
+    -->
+    <style>
+    .border{
+        border: solid 1px #06857a;
+        border-radius: 5px;
+        display: flex;
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .translator{
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        
+    }
+    
+    .lista{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .blue{
+      border: solid 2px blue;
+    }
+
+    .red{
+      border: solid 2px red;
+    }
+    </style>
+
+    <div id="app">
+      <div class="wraper">
+        <div class="block">
+          <h2>Задача 9.</h2>
+          <p>Перекладач. Користувачу виводять змішані картки з словами на англійській і українській мові. Користувач поступово клікає на картки (виділяємо синьою рамкою). Якщо знайдено правильні пари карток, що відповідають одному слову, то видаляємо ці картки. Інакше - виділяємо червоною рамкою і через секунду забираємо рамку.
+           </p>
+        </div>
+
+        <div class="block">
+          <div>
+            <h1>Знайдіть пари слів</h1>
+            <div v-if="!isEmptyLists" class="translator">
+  
+              <div  class="border lista">
+                <div 
+                v-for="(word) in someWordsListEn" :key="word.id" 
+                @click="onSelectedWord(word, someWordsListEn)" 
+                class="border"
+                :class="{
+                  blue: word.isSelected,
+                  red: word.isError
+                }">
+                {{word.en}}</div>
+              </div>
+  
+              <div class="border lista">
+                <div 
+                v-for="(word) in someWordsListUa" :key="word.id" 
+                @click="onSelectedWord(word, someWordsListUa)" 
+                class="border"
+                :class="{
+                  blue: word.isSelected,
+                  red: word.isError
+                }">
+                {{word.ua}}
+              </div>
+              </div>
+            </div>
+            <div v-else >Вітаю!</div>
+
+          </div>
+        </div>
+        <div class="back"><a  href="index.html">Назад</a></div>
+       
+      </div>
+    </div>
+
+<script>
+  const { createApp } = Vue;
+
+  const words = [
+    {id:0, en: 'table', ua: 'стіл', isSelected: false, isError: false},
+    {id:1, en: 'car', ua: 'автомобіль', isSelected: false, isError: false},
+    {id:2, en: 'bus', ua: 'автобус', isSelected: false, isError: false},
+    {id:3, en: 'man', ua: 'людина', isSelected: false, isError: false},
+    {id:4, en: 'boy', ua: 'хлопець', isSelected: false, isError: false},
+  ]
+
+
+  createApp({
+    data() {
+      return {
+        someWordsListEn: this.someWords(),
+        someWordsListUa: this.someWords(),
+        selectedWordEn: null,
+        selectedWordUa: null,
+      }
+    },
+    methods: {
+      someWords() {
+        let someWordsList = JSON.parse(JSON.stringify(words));
+        for (let i = someWordsList.length - 1; i > 0; i--) {
+						let j = Math.floor(Math.random() * (i + 1));
+						[someWordsList[i], someWordsList[j]] = [someWordsList[j], someWordsList[i]];
+					}
+					return someWordsList;
+        },
+
+      onSelectedWord(word, wordsList){
+
+        if(wordsList  === this.someWordsListEn) {
+          if(this.selectedWordEn) {
+            this.selectedWordEn.isSelected = false;
+          }
+          this.selectedWordEn = word;
+          this.selectedWordEn.isSelected = true;
+        } else {
+          if(this.selectedWordUa) {
+            this.selectedWordUa.isSelected = false;
+          }
+          this.selectedWordUa = word;
+          this.selectedWordUa.isSelected = true;
+        }
+          if(this.selectedWordEn && this.selectedWordUa) {
+            if (this.selectedWordUa.id === this.selectedWordEn.id) {
+            const idSelectedWord = this.selectedWordEn.id;
+
+              this.someWordsListEn = this.someWordsListEn.filter(word => word.id !== idSelectedWord);
+							this.someWordsListUa = this.someWordsListUa.filter(word => word.id !== idSelectedWord);
+							this.selectedWordEn = null;
+							this.selectedWordUa = null;
+						} else {
+							this.selectedWordEn.isError = true;
+							this.selectedWordUa.isError = true;
+							setTimeout(() => {
+								this.selectedWordEn.isError = false;
+								this.selectedWordUa.isError = false;
+								this.selectedWordEn.isSelected = false;
+								this.selectedWordUa.isSelected = false;
+								this.selectedWordEn = null;
+								this.selectedWordUa = null;
+							}, 1000);
+            }
+        }
+      
+    },
+  },
+
+    computed: {
+      isEmptyLists() {
+					return this.someWordsListUa.length === 0 && this.someWordsListEn.length === 0;
+				}
+    }
+  
+  }).mount('#app')
+</script>
+
+</body>
+</html>
